@@ -1,0 +1,11 @@
+{
+  "name": "@repo/tokens",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "typescript": "^5.8.2"
+  }
+}
