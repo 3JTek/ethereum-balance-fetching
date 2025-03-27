@@ -1,14 +1,29 @@
-# Turborepo starter
+# Ethereum Balance Fetching App
 
-This Turborepo starter is maintained by the Turborepo core team.
+## Requirements
 
-## Using this example
+Display the balances of an Ethereum address input by a user.
 
-Run the following command:
+# Frontend
 
-```sh
-npx create-turbo@latest
-```
+- A form that accepts an Ethereum address.
+- On successful form submission, call the backend’s /api/balance
+  endpoint.
+- Display the resulting balances as follow:
+  Raw Balance → Formatted
+  123456.789876 → 123,456.7897
+  0.0123456 → 0.01234
+  0.0000123456 → 0.00001234
+
+# Backend
+
+- Return an appropriate error for invalid Ethereum address argument value.
+- Retrieve balances for a given address (using a public Ethereum
+  RPC endpoint like Infura, Alchemy, or other).
+- Tokens to retrieve balances for - USDC, ETH, LINK. On the Ethereum mainnet chain.
+- If an individual token balance request errors out for any reason - it should be omitted from the final result, with other balances being returned. If no balances are available - an error should be returned.
+
+- Extra: add in-memory cache on the backend, so that balances for the same address are not requested more often than once every 60 seconds from the downstream RPCs.
 
 ## What's inside?
 
@@ -16,69 +31,18 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+- `web`: a [Next.js](https://nextjs.org/) frontend app
+- `api`: a [Nest.js](https://nestjs.com/) backend app
+- `@repo/ui`: a stub React component library
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
 
 ### Develop
 
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm dev
+yarn dev
 ```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
