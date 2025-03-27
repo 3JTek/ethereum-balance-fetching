@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
+import { AlchemyModule } from './alchemy/alchemy.module';
+import { AlchemyService } from './alchemy/alchemy.service';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { ConfigurationModule } from './config/config.module';
 
 @Module({
-  imports: [ConfigurationModule],
+  imports: [ConfigurationModule, AlchemyModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AlchemyService],
 })
 export class AppModule {}
