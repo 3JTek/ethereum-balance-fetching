@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  findSymbolByAddress,
-  tokens,
-  TokenSymbol,
-} from '@repo/tokens/tokenAddresses';
+import { findSymbolByAddress, tokens, TokenSymbol } from '@repo/tokens/tokenAddresses';
 
 import { Network, Alchemy, BigNumber } from 'alchemy-sdk';
+
+export type TokenBalance = {
+  symbol: TokenSymbol;
+  balance: string;
+  decimals: number;
+  error: string;
+};
 
 @Injectable()
 export class AlchemyService {
@@ -19,36 +22,48 @@ export class AlchemyService {
     });
   }
 
-  public async getEthBalanceOfWallet(walletAddress: string): Promise<string> {
-    const ethBalance = await this.alchemy.core.getBalance(walletAddress);
+  public async getEthBalanceOfWallet(walletAddress: string): Promise<TokenBalance> {
+    try {
+      const ethBalance = await this.alchemy.core.getBalance(walletAddress);
 
-    return ethBalance.toString();
+      return {
+        symbol: TokenSymbol.ETH,
+        balance: ethBalance.toString(),
+        decimals: tokens[TokenSymbol.ETH].decimals,
+        error: null,
+      };
+    } catch (error) {
+      console.log(error);
+
+      return this.handleBalanceFetchError(TokenSymbol.ETH);
+    }
   }
 
-  public async getTokensBalanceOfWallet(
-    walletAddress: string,
-    tokenSymbols: TokenSymbol[],
-  ): Promise<{ symbol: string; balance: string }[]> {
+  public async getTokensBalanceOfWallet(walletAddress: string, tokenSymbols: TokenSymbol[]): Promise<TokenBalance[]> {
     try {
-      console.log(walletAddress, tokenSymbols);
+      const tokenAddresses = tokenSymbols.map((symbol) => tokens[symbol].address);
 
-      const tokenAddresses = tokenSymbols.map(
-        (symbol) => tokens[symbol].address,
-      );
+      const response = await this.alchemy.core.getTokenBalances(walletAddress, tokenAddresses);
 
-      console.log(tokenAddresses);
-      const response = await this.alchemy.core.getTokenBalances(
-        walletAddress,
-        tokenAddresses,
-      );
-
-      console.log(response);
       return response.tokenBalances.map((token) => ({
         symbol: findSymbolByAddress(token.contractAddress),
         balance: token.tokenBalance,
+        decimals: tokens[findSymbolByAddress(token.contractAddress)].decimals,
+        error: token.error || null,
       }));
     } catch (error) {
-      console.error('Error fetching token balances:', error);
+      console.log(error);
+
+      return tokenSymbols.map((symbol) => this.handleBalanceFetchError(symbol));
     }
+  }
+
+  private handleBalanceFetchError(tokenSymbol: TokenSymbol): TokenBalance {
+    return {
+      symbol: tokenSymbol,
+      balance: undefined,
+      error: 'Error fetching token balance',
+      decimals: tokens[tokenSymbol].decimals,
+    };
   }
 }

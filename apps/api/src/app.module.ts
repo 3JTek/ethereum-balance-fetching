@@ -4,10 +4,11 @@ import { AlchemyService } from './alchemy/alchemy.service';
 import { AppController } from './app.controller';
 
 import { ConfigurationModule } from './config/config.module';
+import { AppService } from './app.service';
 
 @Module({
   imports: [ConfigurationModule, AlchemyModule],
   controllers: [AppController],
-  providers: [AlchemyService],
+  providers: [AlchemyService, AppService],
 })
 export class AppModule {}
