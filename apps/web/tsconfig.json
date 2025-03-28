@@ -5,7 +5,13 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "baseUrl": ".", // Set the base directory for resolving paths
+    "paths": {
+      "@components/*": ["src/components/*"], // Example alias for components
+      "@utils/*": ["src/utils/*"], // Example alias for utilities
+      "@styles/*": ["src/styles/*"] // Example alias for styles
+    }
   },
   "include": [
     "**/*.ts",
@@ -14,7 +20,5 @@
     "next.config.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
