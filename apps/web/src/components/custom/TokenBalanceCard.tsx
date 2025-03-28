@@ -1,6 +1,6 @@
-import { TokenBalance } from '@components/api/fetchWalletBalance';
+import { TokenBalance } from 'src/api/fetchWalletBalance';
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import formatTokenBalance from '@components/lib/formatTokenBalance';
+import formatTokenBalance from 'src/lib/formatTokenBalance';
 import { formatUnits } from 'viem';
 
 type Props = {

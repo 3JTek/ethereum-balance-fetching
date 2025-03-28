@@ -33,7 +33,7 @@ function getDecimalPlaces(decimal: Decimal) {
 function findFirstNonZeroDecimalIndex(decimal: Decimal): number {
   return decimal
     .toString()
-    .split('.')[1]
+    .split('.')[1]!
     .split('')
     .findIndex((digit) => digit !== '0');
 }

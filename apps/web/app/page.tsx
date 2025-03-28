@@ -1,12 +1,12 @@
 'use client';
 
-import { Button } from '@components/components/ui/button';
+import { Button } from '@components/ui/button';
 
-import TokenBalanceCard from '@components/components/custom/TokenBalanceCard';
-import { Input } from '@components/components/ui/input';
+import { Input } from '@components/ui/input';
 
-import fetchWalletBalance, { TokenBalance } from '@components/api/fetchWalletBalance';
+import fetchWalletBalance, { TokenBalance } from 'src/api/fetchWalletBalance';
 import { useState } from 'react';
+import TokenBalanceCard from '@components/custom/TokenBalanceCard';
 
 export default function Home() {
   const [address, setAddress] = useState<string>('');
