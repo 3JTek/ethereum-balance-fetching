@@ -14,6 +14,7 @@ export type TokenBalance = {
 @Injectable()
 export class AlchemyService {
   private readonly alchemy: Alchemy;
+  private readonly cache: Map<string, { data: TokenBalance | TokenBalance[]; expiresAt: number }> = new Map();
 
   constructor(private configService: ConfigService) {
     this.alchemy = new Alchemy({
@@ -23,15 +24,29 @@ export class AlchemyService {
   }
 
   public async getEthBalanceOfWallet(walletAddress: string): Promise<TokenBalance> {
+    const cacheKey = `ETH:${walletAddress}`;
+
+    if (this.isCacheValid(cacheKey)) {
+      console.log(`Cache hit for ${cacheKey}`);
+
+      return this.cache.get(cacheKey).data as TokenBalance;
+    }
+
     try {
+      console.log(`No cache hit for ${cacheKey}, fetching balance...`);
+
       const ethBalance = await this.alchemy.core.getBalance(walletAddress);
 
-      return {
+      const result: TokenBalance = {
         symbol: TokenSymbol.ETH,
         balance: ethBalance.toString(),
         decimals: tokens[TokenSymbol.ETH].decimals,
         error: null,
       };
+
+      this.cache.set(cacheKey, { data: result, expiresAt: Date.now() + 60000 });
+
+      return result;
     } catch (error) {
       console.log(error);
 
@@ -65,5 +80,10 @@ export class AlchemyService {
       error: 'Error fetching token balance',
       decimals: tokens[tokenSymbol].decimals,
     };
+  }
+
+  private isCacheValid(cacheKey: string): boolean {
+    const cached = this.cache.get(cacheKey);
+    return cached && cached.expiresAt > Date.now();
   }
 }
