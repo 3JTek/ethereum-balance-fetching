@@ -8,7 +8,7 @@ type Props = {
 };
 
 const TokenBalanceCard = ({ balance }: Props) => {
-  const { symbol, balance: value, decimals } = balance;
+  const { symbol, balance: value, decimals, error } = balance;
 
   const formattedBalance = formatTokenBalance(formatUnits(BigInt(value), decimals));
 
@@ -16,7 +16,7 @@ const TokenBalanceCard = ({ balance }: Props) => {
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>{symbol}</CardTitle>
-        <CardDescription>{formattedBalance}</CardDescription>
+        <CardDescription>{error || formattedBalance}</CardDescription>
       </CardHeader>
     </Card>
   );

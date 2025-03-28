@@ -21,7 +21,6 @@ Display the balances of an Ethereum address input by a user.
 - Retrieve balances for a given address (using a public Ethereum RPC endpoint like Infura, Alchemy, or other).
 - Tokens to retrieve balances for - USDC, ETH, LINK. On the Ethereum mainnet chain.
 - If an individual token balance request errors out for any reason - it should be omitted from the final result, with other balances being returned. If no balances are available - an error should be returned.
-
 - Extra: add in-memory cache on the backend, so that balances for the same address are not requested more often than once every 60 seconds from the downstream RPCs.
 
 ## What's inside?
