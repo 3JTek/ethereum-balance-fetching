@@ -18,8 +18,7 @@ Display the balances of an Ethereum address input by a user.
 # Backend
 
 - Return an appropriate error for invalid Ethereum address argument value.
-- Retrieve balances for a given address (using a public Ethereum
-  RPC endpoint like Infura, Alchemy, or other).
+- Retrieve balances for a given address (using a public Ethereum RPC endpoint like Infura, Alchemy, or other).
 - Tokens to retrieve balances for - USDC, ETH, LINK. On the Ethereum mainnet chain.
 - If an individual token balance request errors out for any reason - it should be omitted from the final result, with other balances being returned. If no balances are available - an error should be returned.
 
